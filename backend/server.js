@@ -75,7 +75,7 @@ passport.deserializeUser((obj, done) => {
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: (process.env.BASE_URL || 'http://localhost:5001') + '/auth/google/callback',
+  callbackURL: process.env.BASE_URL + '/auth/google/callback',
   scope: ['profile', 'https://www.googleapis.com/auth/youtube.readonly'],
   accessType: 'offline',
   prompt: 'consent',

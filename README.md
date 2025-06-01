@@ -13,7 +13,6 @@ Organize your YouTube subscriptions into custom categories for better content ma
 - npm
 - Docker (optional)
 - Google OAuth credentials
-- YouTube Data API key
 
 ## Setup
 
@@ -33,7 +32,6 @@ Organize your YouTube subscriptions into custom categories for better content ma
    GOOGLE_CLIENT_ID=your_actual_client_id
    GOOGLE_CLIENT_SECRET=your_actual_client_secret
    SESSION_SECRET=your_session_secret
-   YOUTUBE_API_KEY=your_youtube_api_key
    ```
 4. Install dependencies:
    ```bash
