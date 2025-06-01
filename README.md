@@ -63,12 +63,20 @@ Organize your YouTube subscriptions into custom categories for better content ma
    npm start
    ```
 
-### Docker Setup
-1. Start MongoDB and backend services:
+### Docker Setup (Complete)
+1. Navigate to the project root directory
+2. Update backend/.env.example with your credentials and copy to .env:
    ```bash
-   docker-compose up -d
+   cp backend/.env.example backend/.env
+   # Edit backend/.env with your actual credentials
    ```
-2. The frontend needs to be started separately as above
+3. Build and start all services:
+   ```bash
+   docker-compose up --build
+   ```
+4. Access the application at:
+   - Frontend: http://localhost:3000
+   - Backend: http://localhost:5001
 
 ## Configuration
 - Google OAuth: Create credentials at [Google Cloud Console](https://console.cloud.google.com/)
@@ -80,10 +88,11 @@ Organize your YouTube subscriptions into custom categories for better content ma
 
 ## Project Structure
 ```
-├── backend/         # Node.js backend
-├── frontend/        # React frontend
+├── backend/         # Node.js backend (with Dockerfile)
+├── frontend/        # React frontend (with Dockerfile)
 ├── docker-compose.yml # Docker configuration
-└── .gitignore       # Git ignore rules
+├── .gitignore       # Git ignore rules
+└── README.md        # Project documentation
 ```
 
 ## License

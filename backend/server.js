@@ -15,12 +15,20 @@ const port = process.env.PORT || 5001;
 console.log(`Starting server on port ${port}...`);
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log('Connected to MongoDB'))
-.catch(err => console.error('MongoDB connection error:', err));
+// Connect to MongoDB with retry logic
+const connectWithRetry = () => {
+  mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => {
+    console.error('MongoDB connection error:', err);
+    console.log('Retrying connection in 5 seconds...');
+    setTimeout(connectWithRetry, 5000);
+  });
+};
+connectWithRetry();
 
 // Define schemas
 const categorySchema = new mongoose.Schema({
@@ -40,7 +48,7 @@ const Assignment = mongoose.model('Assignment', assignmentSchema);
 
 // Enable CORS
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
   credentials: true
 }));
 app.use(bodyParser.json());
@@ -67,7 +75,7 @@ passport.deserializeUser((obj, done) => {
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: `http://localhost:5001/auth/google/callback`,
+  callbackURL: (process.env.BASE_URL || 'http://localhost:5001') + '/auth/google/callback',
   scope: ['profile', 'https://www.googleapis.com/auth/youtube.readonly'],
   accessType: 'offline',
   prompt: 'consent',
@@ -90,7 +98,7 @@ app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
   (req, res) => {
     // Successful authentication, redirect to frontend with user info
-    res.redirect(`${process.env.FRONTEND_URL}?user=${encodeURIComponent(JSON.stringify(req.user))}`);
+    res.redirect((process.env.FRONTEND_URL || 'http://localhost:3000') + `?user=${encodeURIComponent(JSON.stringify(req.user))}`);
   }
 );
 
@@ -398,7 +406,7 @@ app.get('/api/assignments', async (req, res) => {
 // Logout route
 app.get('/logout', (req, res) => {
   req.logout(() => {
-    res.redirect(process.env.FRONTEND_URL);
+    res.redirect(process.env.FRONTEND_URL || 'http://localhost:3000');
   });
 });
 
