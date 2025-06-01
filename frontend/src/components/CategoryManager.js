@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './CategoryManager.css';
 
 function CategoryManager({ categories, onCreate, onDelete, onSelect }) {
   const [newCategory, setNewCategory] = useState('');

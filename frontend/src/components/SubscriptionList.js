@@ -1,45 +1,91 @@
-import React from 'react';
+import React, { useState } from 'react';
+import './SubscriptionList.css';
 
 function SubscriptionList({ subscriptions, categories, assignments, onAssign }) {
+  // Added for responsive layout
+  const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
+  
   return (
-    <div className="subscription-list">
+    <div className="subscription-container">
+      <div className="subscription-header">
       <h2>Your Subscriptions</h2>
-      {subscriptions.length === 0 ? (
-        <p>No subscriptions found</p>
-      ) : (
-        <ul>
-          {subscriptions.map(sub => (
-            <li key={sub.id} className="subscription-item">
-              <img
-                src={sub.thumbnail}
-                alt={sub.title}
-                className="channel-thumbnail"
-              />
-              <div className="channel-info">
-                <h3>{sub.title}</h3>
-                <p>{sub.description}</p>
-              </div>
-              <div className="channel-actions">
-                {assignments[sub.id] ? (
-                  <div>
-                    <span>Assigned to: </span>
-                    <span>{assignments[sub.id].name}</span>
-                    <button onClick={() => onAssign(sub.id, '')}>Unassign</button>
+        <div className="view-toggle">
+                      <button 
+            className={`toggle-button ${viewMode === 'grid' ? 'active' : ''}`}
+            onClick={() => setViewMode('grid')}
+            title="Grid View"
+                      >
+            <span className="material-icons">grid_view</span>
+                      </button>
+          <button 
+            className={`toggle-button ${viewMode === 'list' ? 'active' : ''}`}
+            onClick={() => setViewMode('list')}
+            title="List View"
+                      >
+            <span className="material-icons">view_list</span>
+          </button>
+                    </div>
                   </div>
-                ) : (
-                  <select onChange={(e) => onAssign(sub.id, e.target.value)}>
-                    <option value="">Assign to category</option>
-                    {categories.map(category => (
-                      <option key={`${category.id}-${category.name}`} value={category.id}>
-                        {category.name}
-                      </option>
-                    ))}
-                  </select>
+      
+      {subscriptions.length === 0 ? (
+        <div className="no-content">
+          <p>No subscriptions found</p>
+              </div>
+      ) : (
+        <div className={`subscription-${viewMode}`}>
+          {subscriptions.map(sub => (
+            <div 
+              key={sub.id} 
+              className={`subscription-card ${assignments[sub.id] ? 'assigned' : 'unassigned'}`}
+            >
+              <div className="card-header">
+                <img
+                  src={sub.thumbnail}
+                  alt={sub.title}
+                  className="channel-thumbnail"
+                />
+                <h3 className="channel-title">{sub.title}</h3>
+    </div>
+              
+              <div className="card-body">
+                <p className="channel-description">{sub.description}</p>
+              </div>
+              
+              {/* Enhanced category tag with delete button for assigned items */}
+              {assignments[sub.id] && (
+                <div className="category-tag">
+                  <span>{assignments[sub.id].name}</span>
+                  <button 
+                    className="tag-delete-button" 
+                        onClick={() => onAssign(sub.id, '')}
+                    title="Remove from category"
+                      >
+                    <span className="material-icons">close</span>
+                  </button>
+                </div>
+              )}
+              <div className="card-footer">
+                {/* Show assignment control only for unassigned items */}
+                {!assignments[sub.id] && (
+                  <div className="assignment-control">
+                    <select
+                      onChange={(e) => onAssign(sub.id, e.target.value)}
+                      defaultValue=""
+                      className="category-select"
+                    >
+                      <option value="" disabled>Assign to category</option>
+                      {categories.map(category => (
+                        <option key={`${category.id}-${category.name}`} value={category.id}>
+                          {category.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 )}
               </div>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );

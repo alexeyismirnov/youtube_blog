@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import SubscriptionList from './components/SubscriptionList';
 import CategoryManager from './components/CategoryManager';
 import TimelineView from './components/TimelineView';
+import './App.css';
+import './styles/common.css';
 
 function App() {
   const [subscriptions, setSubscriptions] = useState([]);
