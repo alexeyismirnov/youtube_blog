@@ -1,15 +1,15 @@
 .category-manager {
   background-color: white;
   border-radius: 12px;
-  padding: 24px;
+  padding: 16px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   margin-bottom: 20px;
 }
 
 .manager-header {
-  margin-bottom: 24px;
+  margin-bottom: 16px;
   border-bottom: 2px solid #f0f0f0;
-  padding-bottom: 16px;
+  padding-bottom: 12px;
 }
 
 .manager-header h3 {
@@ -26,13 +26,14 @@
 }
 
 .create-category-section {
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .create-category {
   display: flex;
-  gap: 8px;
+  gap: 12px;
   align-items: stretch;
+  width: 100%;
 }
 
 .category-input {
@@ -70,8 +71,9 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  min-width: 100px;
+  min-width: 120px;
   justify-content: center;
+  white-space: nowrap;
 }
 
 .create-button:hover:not(:disabled) {

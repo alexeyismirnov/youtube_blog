@@ -1,0 +1,64 @@
+/* Drawer Toggle Button Styles */
+.drawer-toggle {
+  display: none; /* Hidden on desktop by default */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+  gap: 4px;
+  backdrop-filter: blur(10px);
+}
+
+.drawer-toggle:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.hamburger-line {
+  width: 20px;
+  height: 2px;
+  background: white;
+  border-radius: 1px;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+/* Animation when drawer is open */
+.drawer-toggle-open .hamburger-line:nth-child(1) {
+  transform: rotate(45deg) translate(3px, 3px);
+}
+
+.drawer-toggle-open .hamburger-line:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.drawer-toggle-open .hamburger-line:nth-child(3) {
+  transform: rotate(-45deg) translate(3px, -3px);
+}
+
+/* Show toggle button on tablet and mobile */
+@media (max-width: 1024px) {
+  .drawer-toggle {
+    display: flex;
+  }
+}
+
+/* Adjust size for smaller screens */
+@media (max-width: 480px) {
+  .drawer-toggle {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .hamburger-line {
+    width: 18px;
+  }
+}

@@ -4,7 +4,7 @@
 
 .subscription-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   margin-bottom: 24px;
   padding: 20px 24px;
@@ -28,43 +28,9 @@
   font-size: 1.3rem;
 }
 
-.view-toggle {
-  display: flex;
-  gap: 4px;
-  background-color: #f5f5f5;
-  padding: 4px;
-  border-radius: 8px;
-}
 
-.toggle-button {
-  background: none;
-  border: none;
-  border-radius: 6px;
-  padding: 8px 12px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  color: #666;
-}
 
-.toggle-button:hover {
-  background-color: rgba(255, 255, 255, 0.7);
-  color: #333;
-}
 
-.toggle-button.active {
-  background-color: white;
-  color: #1976d2;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.subscription-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 24px;
-}
 
 .subscription-list {
   display: flex;
@@ -267,11 +233,8 @@
     gap: 16px;
     text-align: center;
   }
-  
-  .subscription-grid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 16px;
-  }
+
+
   
   .card-header {
     padding: 16px;
@@ -294,10 +257,8 @@
 }
 
 @media (max-width: 480px) {
-  .subscription-grid {
-    grid-template-columns: 1fr;
-  }
-  
+
+
   .subscription-header {
     padding: 16px;
     margin-bottom: 16px;

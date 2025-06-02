@@ -1,4 +1,4 @@
-/* App.css - Clean version */
+/* App.css */
 .App {
   text-align: center;
   min-height: 100vh;
@@ -137,6 +137,53 @@ header {
   color: #666;
   font-size: 1.1rem;
   line-height: 1.6;
+}
+
+/* Responsive Design */
+@media (min-width: 1920px) {
+  .container {
+    gap: 20px;
+    padding: 0 20px;
+  }
+}
+
+@media (min-width: 1440px) and (max-width: 1919px) {
+  .container {
+    gap: 20px;
+    padding: 0 20px;
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1439px) {
+  .container {
+    gap: 20px;
+    padding: 0 20px;
+  }
+}
+
+/* Ultra-wide screen improvements */
+@media (min-width: 2560px) {
+  .container {
+    gap: 20px;
+    padding: 0 20px;
+  }
+  
+  .login-prompt {
+    max-width: 800px;
+    padding: 60px;
+  }
+  
+  header {
+    padding: 32px 40px;
+  }
+  
+  .header-title h1 {
+    font-size: 3rem;
+  }
+  
+  .header-title p {
+    font-size: 1.3rem;
+  }
 }
 
 @media (max-width: 1024px) {

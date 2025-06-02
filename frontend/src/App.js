@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SubscriptionList from './components/SubscriptionList';
-import CategoryManager from './components/CategoryManager';
-import Navigation from './components/Navigation';
+import Drawer from './components/Drawer';
+import DrawerToggle from './components/DrawerToggle';
 import TimelineView from './components/TimelineView';
 import './App.css';
 import './styles/common.css';
@@ -13,6 +13,41 @@ function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  
+  // Handle screen resize
+  useEffect(() => {
+    const handleResize = () => {
+      const wide = window.innerWidth > 1024;
+      // On wide screens, drawer should be open by default
+      // On narrow screens, drawer should be closed by default
+      if (wide) {
+        setIsDrawerOpen(true);
+      } else {
+        setIsDrawerOpen(false);
+      }
+    };
+    
+    // Set initial state
+    handleResize();
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
+  const toggleDrawer = () => {
+    setIsDrawerOpen(!isDrawerOpen);
+  };
+
+  // Handle view change with auto-close on mobile
+  const handleViewChange = (category) => {
+    setSelectedCategory(category);
+    
+    // Auto-close drawer on mobile screens (width <= 1024px)
+    if (window.innerWidth <= 1024) {
+      setIsDrawerOpen(false);
+    }
+  };
   
   // Function to fetch categories
   const fetchCategories = async () => {
@@ -264,8 +299,13 @@ function App() {
   return (
     <div className="App">
       <header>
-        <h1>YouTube Subscription Manager</h1>
-        <p>Organize your subscriptions into categories</p>
+        <div className="header-left">
+          <DrawerToggle isOpen={isDrawerOpen} onToggle={toggleDrawer} />
+          <div className="header-title">
+            <h1>YouTube Subscription Manager</h1>
+            <p>Organize your subscriptions into categories</p>
+          </div>
+        </div>
         
         <div className="auth-section">
           {user ? (
@@ -284,18 +324,15 @@ function App() {
       
       {user ? (
         <main className="container">
-          <div className="sidebar">
-            <Navigation
-              selectedCategory={selectedCategory}
-              onViewChange={setSelectedCategory}
-              categories={categories}
-            />
-            <CategoryManager
-              categories={categories}
-              onCreate={handleCreateCategory}
-              onDelete={handleDeleteCategory}
-            />
-          </div>
+          <Drawer
+            isOpen={isDrawerOpen}
+            onToggle={toggleDrawer}
+            selectedCategory={selectedCategory}
+            onViewChange={handleViewChange}
+            categories={categories}
+            onCreate={handleCreateCategory}
+            onDelete={handleDeleteCategory}
+          />
           
           <div className="content">
             {selectedCategory ? (

@@ -1,38 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './SubscriptionList_backup.css';
 
 function SubscriptionList({ subscriptions, categories, assignments, onAssign }) {
-  // Added for responsive layout
-  const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
-  
   return (
     <div className="subscription-container">
       <div className="subscription-header">
-      <h2>Your Subscriptions</h2>
-        <div className="view-toggle">
-                      <button 
-            className={`toggle-button ${viewMode === 'grid' ? 'active' : ''}`}
-            onClick={() => setViewMode('grid')}
-            title="Grid View"
-                      >
-            <span className="material-icons">grid_view</span>
-                      </button>
-          <button 
-            className={`toggle-button ${viewMode === 'list' ? 'active' : ''}`}
-            onClick={() => setViewMode('list')}
-            title="List View"
-                      >
-            <span className="material-icons">view_list</span>
-          </button>
-                    </div>
-                  </div>
+        <h2>Your Subscriptions</h2>
+      </div>
       
       {subscriptions.length === 0 ? (
         <div className="no-content">
           <p>No subscriptions found</p>
               </div>
       ) : (
-        <div className={`subscription-${viewMode}`}>
+        <div className="subscription-list">
           {subscriptions.map(sub => (
             <div 
               key={sub.id} 
