@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './SubscriptionList.css';
+import './SubscriptionList_backup.css';
 
 function SubscriptionList({ subscriptions, categories, assignments, onAssign }) {
   // Added for responsive layout

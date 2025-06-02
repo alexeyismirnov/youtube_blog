@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SubscriptionList from './components/SubscriptionList';
 import CategoryManager from './components/CategoryManager';
+import Navigation from './components/Navigation';
 import TimelineView from './components/TimelineView';
 import './App.css';
 import './styles/common.css';
@@ -284,11 +285,15 @@ function App() {
       {user ? (
         <main className="container">
           <div className="sidebar">
+            <Navigation
+              selectedCategory={selectedCategory}
+              onViewChange={setSelectedCategory}
+              categories={categories}
+            />
             <CategoryManager
               categories={categories}
               onCreate={handleCreateCategory}
               onDelete={handleDeleteCategory}
-              onSelect={setSelectedCategory}
             />
           </div>
           

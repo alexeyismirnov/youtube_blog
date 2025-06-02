@@ -7,7 +7,7 @@ function TimelineView({ categoryId }) {
   const [groupedVideos, setGroupedVideos] = useState({});
   const [loading, setLoading] = useState(true);
   const [categoryInfo, setCategoryInfo] = useState(null);
-  const [viewMode, setViewMode] = useState('timeline'); // 'timeline' or 'grid'
+
 
   // Fetch category info and videos
   useEffect(() => {
@@ -93,23 +93,8 @@ function TimelineView({ categoryId }) {
             <span className="date-range">{dateRange}</span>
           </div>
         </div>
-        
-        <div className="view-controls">
-          <button 
-            className={`view-button ${viewMode === 'timeline' ? 'active' : ''}`}
-            onClick={() => setViewMode('timeline')}
-          >
-            <span className="material-icons">timeline</span>
-            Timeline
-          </button>
-          <button 
-            className={`view-button ${viewMode === 'grid' ? 'active' : ''}`}
-            onClick={() => setViewMode('grid')}
-          >
-            <span className="material-icons">grid_view</span>
-            Grid
-          </button>
-        </div>
+
+
       </div>
 
       {totalVideos === 0 ? (
@@ -117,7 +102,7 @@ function TimelineView({ categoryId }) {
           <span className="material-icons large">videocam_off</span>
           <p>No videos found for this category</p>
         </div>
-      ) : viewMode === 'timeline' ? (
+      ) : (
         <div className="timeline-container">
           <div className="timeline-line"></div>
           
@@ -166,41 +151,6 @@ function TimelineView({ categoryId }) {
                     </div>
                   </div>
                 ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="video-grid">
-          {videos.map(video => (
-            <div key={video.id} className="grid-video-card">
-              <div className="video-thumbnail">
-                <a 
-                  href={`https://www.youtube.com/watch?v=${video.id}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img src={video.thumbnailUrl} alt={video.title} />
-                  <div className="play-button">
-                    <span className="material-icons">play_arrow</span>
-                  </div>
-                </a>
-                <div className="video-date">
-                  {new Date(video.publishedAt).toLocaleDateString()}
-                </div>
-              </div>
-              
-              <div className="grid-video-details">
-                <h4>
-                  <a
-                    href={`https://www.youtube.com/watch?v=${video.id}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {decodeHtml(video.title)}
-                  </a>
-                </h4>
-                <p className="channel-name">{decodeHtml(video.channelTitle)}</p>
               </div>
             </div>
           ))}
