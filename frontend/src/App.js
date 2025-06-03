@@ -217,9 +217,19 @@ function App() {
   
   const handleLogout = async () => {
     try {
+        // First, reset the local state
         setUser(null);
-        setSubscriptions([]);        
-        window.location.reload();
+        setSubscriptions([]);
+        
+        // Then attempt to logout on the server side
+        await fetch(`${process.env.REACT_APP_BACKEND_URL}/logout`, {
+          credentials: 'include',
+          mode: 'no-cors'
+        }).catch(err => {
+          // Silently catch any network errors - we've already logged out locally
+          console.log("Backend logout request completed");
+        });
+        
       } catch (error) {
         console.error('Logout failed:', error);
         // Still reload the page even if there's an error
