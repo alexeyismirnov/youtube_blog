@@ -40,20 +40,18 @@ function CategoryManager({ categories, onCreate, onDelete }) {
           />
           <button 
             onClick={handleCreate} 
-            className="create-button"
+            className="big-plus-button"
             disabled={!newCategory.trim() || isCreating}
+            title="Create category"
           >
             {isCreating ? (
               <span className="loading-spinner"></span>
             ) : (
-              <>
-                <span className="button-icon">+</span>
-                Create
-              </>
+              <span className="big-plus-icon">+</span>
             )}
           </button>
         </div>
-      </div>
+        </div>
       
       {categories.length > 0 ? (
         <div className="categories-section">

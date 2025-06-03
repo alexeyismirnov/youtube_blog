@@ -333,7 +333,7 @@ function App() {
         <div className="auth-section">
           {user ? (
             <div className="user-info">
-              <img src={user.photos[0].value} alt="Profile" className="profile-pic" />
+              <img src={user.photos[0].value} alt="Profile" className="user-avatar" />
               <span>{user.displayName}</span>
               <button onClick={handleLogout}>Logout</button>
             </div>
