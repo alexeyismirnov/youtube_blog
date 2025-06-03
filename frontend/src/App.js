@@ -222,6 +222,7 @@ function App() {
       });
       setUser(null);
       setSubscriptions([]);
+      window.location.reload();
     } catch (error) {
       console.error('Logout failed:', error);
     }
