@@ -5,6 +5,8 @@ import DrawerToggle from './components/DrawerToggle';
 import TimelineView from './components/TimelineView';
 import './App.css';
 import './styles/common.css';
+import './styles/ios-pwa.css'; // Import iOS-specific styles
+import { isIOS, isInStandaloneMode, applyIOSClasses, showIOSInstallPrompt, addIOSPromptStyles } from './utils/iosDetection';
 
 function App() {
   const [subscriptions, setSubscriptions] = useState([]);
@@ -14,7 +16,29 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isPWA, setIsPWA] = useState(false);
   
+  // Apply iOS-specific classes and show install prompt
+  useEffect(() => {
+    // Apply iOS-specific classes
+    if (isIOS()) {
+      applyIOSClasses();
+    }
+    
+    // Check if running as PWA
+    setIsPWA(isInStandaloneMode());
+    
+    // Show iOS install prompt after a delay (only in browser mode)
+    if (isIOS() && !isInStandaloneMode()) {
+      addIOSPromptStyles();
+      const timer = setTimeout(() => {
+        showIOSInstallPrompt();
+      }, 5000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
   // Handle screen resize
   useEffect(() => {
     const handleResize = () => {
@@ -38,7 +62,7 @@ function App() {
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
-
+  
   // Handle view change with auto-close on mobile
   const handleViewChange = (category) => {
     setSelectedCategory(category);
@@ -52,12 +76,11 @@ function App() {
   // Function to fetch categories
   const fetchCategories = async () => {
     if (!user) return;
-    
     try {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/categories`, {
         credentials: 'include'
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         // Ensure all category IDs are strings for consistent comparison
@@ -81,21 +104,21 @@ function App() {
     const userParam = urlParams.get('user');
     
     if (userParam) {
-      try {
+    try {
         const userData = JSON.parse(decodeURIComponent(userParam));
         setUser({
           id: userData.id, // Use consistent 'id' field from backend
           displayName: userData.displayName,
           photos: userData.photos
-        });
-        
+      });
+      
         // Clean up URL
         window.history.replaceState({}, document.title, window.location.pathname);
-      } catch (error) {
+    } catch (error) {
         console.error('Error parsing user data:', error);
-      } finally {
+    } finally {
         setLoading(false);
-      }
+    }
     } else {
       // Check authentication status via API if no user in URL
       const checkAuth = async () => {
@@ -240,9 +263,9 @@ function App() {
       }));
     } catch (error) {
       console.error('Failed to assign subscription:', error);
-    }
+}
   };
-  
+
   const handleCreateCategory = async (name) => {
     try {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/categories`, {
@@ -288,7 +311,7 @@ function App() {
   if (loading) {
     return (
       <div className="App">
-        <header>
+        <header className={isIOS() ? 'ios-status-bar-padding' : ''}>
           <h1>YouTube Subscription Manager</h1>
         </header>
         <div className="loading">Loading...</div>
@@ -297,8 +320,8 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <header>
+    <div className={`App ${isPWA ? 'pwa-mode' : ''}`}>
+      <header className={isIOS() ? 'ios-status-bar-padding' : ''}>
         <div className="header-left">
           <DrawerToggle isOpen={isDrawerOpen} onToggle={toggleDrawer} />
           <div className="header-title">
@@ -352,6 +375,18 @@ function App() {
           <p>Please login with Google to manage your YouTube subscriptions</p>
         </div>
       )}
+      
+      {/* iOS PWA install banner (only shown in browser mode on iOS) */}
+      {isIOS() && !isPWA && (
+        <div className="pwa-browser-only ios-install-hint">
+          <p>For the best experience, install this app to your home screen</p>
+        </div>
+      )}
+      
+      {/* Footer with safe area padding on iOS */}
+      <footer className={isIOS() ? 'ios-bottom-bar-padding' : ''}>
+        <p>YouTube Subscription Manager PWA</p>
+      </footer>
     </div>
   );
 }
